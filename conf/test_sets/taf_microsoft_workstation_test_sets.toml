@@ -1,0 +1,211 @@
+# General usage test sets are defined below the "defaults" test set.
+
+# ========================================================================================
+#                               Default Test Set
+# ----------------------------------------------------------------------------------------
+# Template for new sets.  These values will be converted to command line arguments
+# and combined with the values from taf.properties and arguments passed directly from
+# the command line to get a final command line argument set.
+
+# Defines the default test set of values that all test set will inherit.  Any values that
+# a test set defines will override the values defined here.
+
+[defaults]
+# Required: description of the test set.
+"info" = "Default values to add to every test.  Each values can be overridden in other test sets."
+
+# Required: 'test_paths' is an array of path values that can either be specific files
+# of a folder (in which case all tests in that folder and below will run).
+"testpaths" = []
+
+# Optional: 'outputsubdir' is the sub-directory within the top level output folder for files.
+# If this option is used, the following variables are auto-replaced with the specified value:
+#   VAR_HOST_NAME_VAR   -> machine hostname
+#   VAR_TEST_SET_VAR    -> test set name
+#   VAR_USER_NAME_VAR   -> username
+#   VAR_LABEL_VAR       -> test set label
+#   VAR_DATE_VAR        -> date in format: YYYY-MM-DD
+#   VAR_DATETIME_VAR    -> datetime in format: YYYY-MM-DDThh-mm-ss
+#      NOTE: if VAR_DATETIME_VAR not in outputsubdir, it will be forced on the end of the path
+# These variables can be used in any Test Set of any Plugin configured.
+# Examples:
+#   "outputsubdir" = "VAR_HOST_NAME_VAR\\VAR_TEST_SET_VAR\\VAR_USER_NAME_VAR\\VAR_DATE_VAR\\VAR_DATETIME_VAR"
+#   "outputsubdir" = "VAR_USER_NAME_VAR\\VAR_LABEL_VAR\\VAR_DATETIME_VAR"
+#   "outputsubdir" = "VAR_LABEL_VAR\\VAR_HOST_NAME_VAR\\VAR_DATE_VAR\\VAR_DATETIME_VAR"
+"outputsubdir" = "VAR_HOST_NAME_VAR\\VAR_LABEL_VAR\\VAR_DATE_VAR\\VAR_DATETIME_VAR"
+# Required: 'generate_dashboard' is a boolean to turn on the generation of the dashboard.
+"generate_dashboard" = true
+"offline_dashboard" = true
+
+[defaults.robot_params]
+# Robot params that will be added directly to the call to robot.  The list below are some
+# of the common prarmeters that TAF passes to robot, but any robot parameter may be added
+# to this list in user defined test sets and the extra params will be added to the call to robot.
+
+# Optional: the name to assign to the robot test suite.
+"--name" = "TAF"
+
+# Optional: Boolean to turn on running of empty test suite when input parameters filter out all tests.
+# Values: True or False
+# Mirrors Robot parameter: --runemptysuite
+"--runemptysuite" = true
+
+# Optional: the flag to tell Robot what kind of log to output to reports.
+# Mirrors Robot parameter: --loglevel <level>
+# Values:  TRACE, DEBUG, INFO (default), HTML, WARN, and ERROR
+"--loglevel" = "TRACE:INFO"
+
+# Optional: a tag pattern that can be a single tag or a pattern using AND, OR, NOT.
+# Mirrors Robot parameter: --include <tag pattern>
+# Examples: tag1  tag1NOTtag2  tag1ANDtag2  tag1ORtag2  tag1ANDtag2ORtag3
+"--include" = ""
+
+# Optional: a list variables of "name:value" format to pass to all tests.
+# Mirrors Robot parameter: --variable varname:value
+# Example:  ["MyVar:MyValue", "MyVar2:MyValue2"]
+"--variable" = []
+
+# Optional: 'outputdir' is the top level folder for output files.
+# Mirrors Robot parameter: --outputdir <folder>
+# "--outputdir" = "$TAF_LOGS"
+
+# Optional: What to name the report HTML file
+# Mirrors Robot parameter: --report <file>
+"--report" = "report.html"
+
+# Optional: What to name the output XML file
+# Mirrors Robot parameter: --output <file>
+"--output" = "output.xml"
+
+# Optional: What to name the log HTML file
+# Mirrors Robot parameter: --log <file>
+"--log" = "log.html"
+
+# Optional: 'pythonpath' tells robot places to look for dependencies used in tests
+# such as python code and/or resource files.
+# Mirrors Robot parameter: --pythonpath <path1:path2>
+"--pythonpath" = [
+    "$TAF_CORE_HOME\\src\\taf_core"
+]
+
+
+# ========================================================================================
+#                               General Test Sets
+# ----------------------------------------------------------------------------------------
+# Parameters defined will override the values defined in the default test set defined above.
+#
+# Tags Notes: tests that involve proof of concept should have the following line
+# added to the "*** Settings ***" section to prevent the test from running as part
+# of the "all_taf_tests" type test sets.  The "dev_only" tag denotes that the
+# test script file is meant for developers only:
+#
+#       Force Tags      dev_only
+
+# ----------------------------------------------------------------------------------------
+[empty]
+"label" = "general"
+"info" = "An empty test set that allows user to specify a test set path on the command line which will be added to the defaults."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = []
+
+[empty.robot_params]
+
+
+# ----------------------------------------------------------------------------------------
+[tests_dryrun]
+"label" = "all_tests_dryrun"
+"info" = "Verify that all TAF test can run without running them.  Check that keywords and libraries are accessible."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+
+[tests_dryrun.robot_params]
+# Will check all found tests can be loaded and that all keywords, libraries, and variables exists.
+"--dryrun" = true
+"--exclude" = "dev_onlyOR*disable*"
+
+
+# ----------------------------------------------------------------------------------------
+[tasks_dryrun]
+"label" = "all_tasks_dryrun"
+"info" = "Verify that all TAF tasks can run without running them. Check that keywords and libraries are accessible."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tasks"
+]
+
+[tasks_dryrun.robot_params]
+# Will check all found tests can be loaded and that all keywords, libraries, and variables exists.
+"--dryrun" = true
+"--exclude" = "dev_only"
+
+
+# ----------------------------------------------------------------------------------------
+[tests]
+"label" = "all_tests"
+"info" = "Run all available tests plus any added command line options.  Excludes dev, config check, and any tests tagged disable."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+
+[tests.robot_params]
+"--exclude" = "dev_onlyORconfig_checkOR*disable*"
+
+
+# ----------------------------------------------------------------------------------------
+# Run all V&V tests
+[functional_tests]
+"label" = "all_functional_tests"
+"info" = "Run all Functional available tests plus any added command line options. Excludes dev_only, kpp, and disable tests."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+
+[functional_tests.robot_params]
+"--exclude" = "dev_onlyORkppOR*disable*"
+"--include" = "functional"
+
+
+# ----------------------------------------------------------------------------------------
+[health_tests]
+"label" = "all_health_tests"
+"info" = "Run all Health available tests plus any added command line options. Excludes dev_only, kpp, and disable tests."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+
+[health_tests.robot_params]
+"--exclude" = "dev_onlyORkppOR*disable*"
+"--include" = "health"
+
+
+# ----------------------------------------------------------------------------------------
+[ia_tests]
+"label" = "all_ia_tests"
+"info" = "Run all Information Assurance available tests plus any added command line options. Excludes dev_only, kpp, and disable tests."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+
+[ia_tests.robot_params]
+"--exclude" = "dev_onlyORkppOR*disable*"
+"--include" = "ia"
+
+
+# ----------------------------------------------------------------------------------------
+[vv_tests]
+"label" = "all_vv_tests"
+"info" = "Run all V&V available tests plus any added command line options. Excludes dev_only, kpp, and disable tests."
+"default_values_test_set" = "taf_microsoft_workstation_test_sets.defaults"
+"testpaths" = [
+    "$TAF_MICROSOFT_WORKSTATION_HOME\\tests"
+]
+[vv_tests.robot_params]
+"--exclude" = "dev_onlyORkppOR*disable*"
+"--include" = "vv"
+

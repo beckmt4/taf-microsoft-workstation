@@ -1,0 +1,36 @@
+# Vaults can be encrypted/decrypted with the following scripts.  Pass the --help
+# argument to the scripts to see help information on using the scripts.
+#
+#   bin/taf_run_vaults_encrypt.bat
+#   bin/taf_run_vaults_decrypt.bat
+#   bin/taf_run_vaults_encrypt.sh
+#   bin/taf_run_vaults_decrypt.sh
+#
+# The format of this vault file is like a TAF plugin_name.toml property file.
+#
+# These values can be accessed by specifying the property name from the vault with a "VAULT::" prefix.
+# Using the "VAULT::" prefix will tell TAF to get the data from the vault.  This will work with all
+# TAF property methods and keywords.
+#
+# Example using a vault proeprty in the  taf-microsoft-workstation.toml proeprty file:
+#   taf.microsoft.workstation.password = "VAULT::taf.microsoft.workstation.password"
+#
+# This template file will be automatically copied to the location specified by the taf.app.vaults.default.file
+# property in taf-microsoft-workstation.toml.
+#
+# To securely use this file, do the following:
+#   1. Configure this plugin in TAF session file with it having the highest precedence
+#   2. Add overrides for user profiles usernames to taf-microsoft-workstation.toml
+#   3. Update needed password values in the deployed vault file at location taf.app.vaults.default.file
+#   4. Encrypt the deployed vault - see TAF Manual
+#   5. Create either a password file or environment variable containing the password
+#      - password file property: taf.app.vaults.default.pass.file
+#      - password environment variable property: taf.app.vaults.default.pass.env.var
+#   6. Run tests
+
+# Example Vault property
+taf.microsoft.workstation.password = "secret.value"
+
+
+
+

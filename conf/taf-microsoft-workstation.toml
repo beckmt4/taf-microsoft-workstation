@@ -1,0 +1,52 @@
+# =====================================================================================================================
+#
+#                                          TAF Microsoft Workstation Properties
+#
+# =====================================================================================================================
+# Default configurations for a Plugin can be defined within this TAF properties file.  In addition, TAF application
+# properties can be modified within this file as well.
+
+# Any default configuration defined in this TAF properties file can be overriden for a specific environment by using
+# the TAF Overrides Properties file, located in TAF_HOME\\config\\overrides.toml
+
+
+# Property values can use any valid TOML value (https://toml.io/en/v1.0.0), including strings, booleans,
+# dictionaries, arrays, and numbers.
+
+# TAF adds the capability to specify values in a few additional ways:
+# - RAW::<value>                      - This will be treated as a raw string and will not be processed by TAF
+# - PY::None                          - This will be treated as a Python None value
+# - VAULT::<vault_property_name>      - This will be treated as a value that should be retrieved from a vault
+# - $VARIABLE_NAME or %VARIABLE_NAME% - This will be treated as a system environment variable and will be replaced
+#                                       with the value of the variable
+
+# To learn more about TAF Properties and TAF Overrides, please refer to the TAF Manual.
+# =====================================================================================================================
+
+# ----------------------------------------------------------------------------
+# Default Plugin Properties
+# ----------------------------------------------------------------------------
+taf.app.robot.run.default.test.set = "taf_microsoft_workstation_test_sets.tests_dryrun"
+taf.microsoft.workstation.logging.keyword.library.run.on.failure.keyword = "TafCoreLibrary.LOG Run On Failure Info"
+
+# ----------------------------------------------------------------------------
+# Vaults
+# The vault properties are global.  If your vault should be the one used by default
+# for the test runner, then set the properties here and specify this plugin as last
+# plugin in the list of plugins being enabled.  Otherwise, copy these properties to
+# the overrides.toml file and set the properties there.
+# ----------------------------------------------------------------------------
+# Default vault file path
+taf.app.vaults.default.file = "$TAF_SECRETS\\taf-microsoft-workstation-vault.toml"
+# Default text file containing password used to decrypt the vault
+taf.app.vaults.default.pass.file = "$USERPROFILE\\.taf\\taf_microsoft_workstation_vault_password.txt"
+# Default environment variable containing password used to decrypt the vault
+taf.app.vaults.default.pass.env.var = "TAF_MICROSOFT_WORKSTATION_VAULT_PASSWORD"
+# Default alias for default vault
+taf.app.vaults.default.alias = "default"
+# Default allow user password entry if no other method found
+taf.app.vaults.default.ask.vault.pass = true
+# Template vault to use when vault does not exist.  Override in plugin if a custom
+# template should be used.
+taf.app.vaults.default.template = "$TAF_MICROSOFT_WORKSTATION_HOME\\resources\\templates\\vaults\\taf-microsoft-workstation-vault.toml"
+

@@ -1,0 +1,32 @@
+# Control where TAF library components are pulled from.
+# Each Plugin will have its own copy of this file in which it should only list
+# those libraries that it provides a export file for.
+
+# Specify the value of the Plugin home env variable.
+plugin.home.name = "taf_microsoft_workstation_home"
+
+# Defines the top source folder of the TAF or Plugin library.  This is used in
+# dynamically injecting Plugins into the TAF code base.
+# Examples:   C:\src\taf-microsoft-workstation\src\taf_microsoft_workstation  -->  taf_microsoft_workstation
+plugin.python.library = "taf_microsoft_workstation"
+
+# Defines the class that will be imported for each of the Keyword libraries that
+# are defined in the Plugin.  The naming of these should contain some portion of the Plugin
+# name in order to make it unique when the library is imported into TAF. For example, the TAF
+# base component libraries all begin with "TafCore" and the "TAF <Name>" libraries would
+# begin with "TafName", etc.
+#
+#       plugin.keyword.library=LibNameKeywordLibraryComponents
+#       plugin.userprofile.library=LibNameUserProfile
+#       plugin.context.library=LibNameContextAware
+#
+# TAF MICROSOFT_WORKSTATION library components
+
+plugin.keyword.library = "TafKeywordLibraryComponents"
+plugin.context.library = "TafContextAware"
+
+# Main project properties specification file.
+plugin.property.file.path.01.properties = "$TAF_MICROSOFT_WORKSTATION_HOME\\conf\\taf-microsoft-workstation.toml"
+
+# Overrides property file path.  This file will not be checked into the source control.
+plugin.property.file.path.02.properties.overrides = "$TAF_MICROSOFT_WORKSTATION_HOME\\conf\\taf-overrides.toml"
